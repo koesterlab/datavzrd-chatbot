@@ -10,12 +10,13 @@ with open("schema.json", "r") as f:
 
 # Function to generate the datavzrd config using Outlines
 def generate_datavzrd_config(user_input, schema):
-    model = outlines.models.transformers("microsoft/Phi-3-mini-4k-instruct")
-    print(json.dumps(schema))
-    generator = outlines.generate.json(model, json.dumps(schema))
-    print(user_input)
-    config = generator(user_input)
-    return config
+    with outlines.caching.cache_disabled():
+        model = outlines.models.transformers("microsoft/Phi-3-mini-4k-instruct")
+        print(json.dumps(schema))
+        generator = outlines.generate.json(model, json.dumps(schema))
+        print(user_input)
+        config = generator(user_input)
+        return config
 
 
 # Streamlit app
